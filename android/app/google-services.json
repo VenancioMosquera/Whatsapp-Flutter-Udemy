@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "991061058325",
+    "project_id": "whatsapp-flutter-udemy",
+    "storage_bucket": "whatsapp-flutter-udemy.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:991061058325:android:a6ca35e43871dd27d03f1c",
+        "android_client_info": {
+          "package_name": "com.example.whatsapp_flutter"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "991061058325-ln9kg40kfcqtv0u6s2pq23cq140grdc3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.whatsapp_flutter",
+            "certificate_hash": "2bfd1026ddcc56901b34b86eb3d9a2087dfb0e0e"
+          }
+        },
+        {
+          "client_id": "991061058325-644e210lssbr3nnjv9d49bgt5m6l73rn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBjC9s5ttwuIA3RMDrkaGX8e1U9CXsby1k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "991061058325-644e210lssbr3nnjv9d49bgt5m6l73rn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
