@@ -4,17 +4,21 @@ import 'package:whatsapp_flutter/shared/themes/app_images.dart';
 import 'package:whatsapp_flutter/shared/widgets/confirm_button/confirm_button_widget.dart';
 import 'package:whatsapp_flutter/shared/widgets/input_text/input_text_widget.dart';
 
-class LoginPage extends StatefulWidget {
-  LoginPage({Key? key}) : super(key: key);
+class SignUpPage extends StatefulWidget {
+  SignUpPage({Key? key}) : super(key: key);
 
   @override
-  _LoginPageState createState() => _LoginPageState();
+  _SignUpPageState createState() => _SignUpPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _SignUpPageState extends State<SignUpPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text("Cadastro"),
+        centerTitle: true,
+      ),
       body: Container(
         padding: EdgeInsets.all(16),
         decoration: BoxDecoration(
@@ -27,8 +31,16 @@ class _LoginPageState extends State<LoginPage> {
               Padding(
                 padding: const EdgeInsets.only(bottom: 32),
                 child: Image.asset(
-                  AppImages.logoFull,
-                  scale: 2,
+                  AppImages.userIcon,
+                  scale: 1.5,
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 8),
+                child: InputTextWidget(
+                  hintText: "Nome",
+                  obscureText: false,
+                  textInputType: TextInputType.text,
                 ),
               ),
               Padding(
@@ -48,34 +60,9 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),
               ConfirmButtonWidget(
-                ButtonText: "Entrar",
+                ButtonText: "Cadastrar",
                 onPressed: () {},
               ),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    "Não tem conta?",
-                    style: TextStyle(color: AppColors.textInfo),
-                  ),
-                  TextButton(
-                    onPressed: () {
-                      Navigator.pushNamed(context, '/signUpPage');
-                    },
-                    child: Text(
-                      "Cadastre-se!",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    style: ButtonStyle(
-                      foregroundColor:
-                          MaterialStateProperty.all(AppColors.textInfo),
-                    ),
-                  ),
-                ],
-              )
             ],
           ),
         ),
