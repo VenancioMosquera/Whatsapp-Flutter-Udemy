@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:whatsapp_flutter/Pages/login_page.dart';
 import 'package:whatsapp_flutter/pages/home_page.dart';
 import 'package:whatsapp_flutter/pages/signup_page.dart';
+import 'package:whatsapp_flutter/shared/service_locator.dart';
 import 'package:whatsapp_flutter/shared/themes/app_colors.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  setup();
 
   runApp(MaterialApp(
     theme: ThemeData(

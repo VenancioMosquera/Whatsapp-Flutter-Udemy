@@ -13,7 +13,6 @@ class ConfirmButtonWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: MediaQuery.of(context).size.width,
-      height: 55,
       child: ElevatedButton(
         onPressed: onPressed,
         child: Text(
@@ -21,14 +20,17 @@ class ConfirmButtonWidget extends StatelessWidget {
           style: TextStyle(color: AppColors.textInfo, fontSize: 17),
         ),
         style: ButtonStyle(
-            backgroundColor: MaterialStateProperty.all(
-              AppColors.loginButton,
+          padding:
+              MaterialStateProperty.all(EdgeInsets.fromLTRB(32, 18, 32, 18)),
+          backgroundColor: MaterialStateProperty.all(
+            AppColors.loginButton,
+          ),
+          shape: MaterialStateProperty.all(
+            RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(40),
             ),
-            shape: MaterialStateProperty.all(
-              RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(40),
-              ),
-            )),
+          ),
+        ),
       ),
     );
   }
