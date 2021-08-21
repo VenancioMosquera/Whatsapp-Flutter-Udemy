@@ -6,4 +6,5 @@ class AppColors {
   static final inputField = Colors.white;
   static final loginButton = Colors.green;
   static final textInfo = Colors.white;
+  static final appBarButton = Colors.white;
 }

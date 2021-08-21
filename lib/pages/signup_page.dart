@@ -23,32 +23,31 @@ class _SignUpPageState extends State<SignUpPage> {
   final _passwordEC = TextEditingController();
   final _passwordConfirmationEC = TextEditingController();
   UserModel user = GetIt.instance.get<UserModel>();
-  String firebaseCheckResult = "";
+  String? firebaseSignUpResult;
 
-  _userSignUp(UserModel user) async {
+  Future _userSignUp(UserModel user) async {
     FirebaseAuth auth = FirebaseAuth.instance;
-    String firebaseCheckResult = "";
+    String? firebaseSignUpResult;
 
     try {
       await auth
           .createUserWithEmailAndPassword(
               email: user.email!, password: user.password!)
-          .then((value) => firebaseCheckResult = "Success");
+          .then((value) => firebaseSignUpResult = "Success");
     } on FirebaseAuthException catch (e) {
-      print("entrei aqui. e.code: " + e.code);
       if (e.code == "weak-password") {
-        firebaseCheckResult = "Senha fraca";
+        firebaseSignUpResult = "Senha fraca";
       } else if (e.code == "email-already-in-use") {
-        print("firebaseCheckResult atualizado");
-        firebaseCheckResult = "Esse e-mail já está registrado";
+        firebaseSignUpResult = "Esse e-mail já está registrado";
       } else if (e.code == "invalid-email") {
-        firebaseCheckResult = "E-mail inválido";
+        firebaseSignUpResult = "E-mail inválido";
       }
     } catch (e) {
-      firebaseCheckResult = "Erro";
+      firebaseSignUpResult =
+          "Erro desconhecido. Favor contacte o administrador.";
       print(e);
     }
-    return firebaseCheckResult;
+    return firebaseSignUpResult;
   }
 
   @override
@@ -152,8 +151,8 @@ class _SignUpPageState extends State<SignUpPage> {
                         var formValid = _formKey.currentState?.validate();
                         if (formValid == true) {
                           _userSignUp(user).then((value) {
-                            firebaseCheckResult = value;
-                            if (firebaseCheckResult == "Success") {
+                            firebaseSignUpResult = value;
+                            if (firebaseSignUpResult == "Success") {
                               Fluttertoast.showToast(
                                 msg: "Cadastro realizado com sucesso",
                                 fontSize: 18,
@@ -167,7 +166,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                 builder: (_) {
                                   return AlertDialog(
                                     title: Text("Erro"),
-                                    content: Text(firebaseCheckResult),
+                                    content: Text(firebaseSignUpResult!),
                                     actions: [
                                       TextButton(
                                           onPressed: () {
