@@ -3,6 +3,14 @@ class UserModel {
   String? _email;
   String? _password;
 
+  Map<String, dynamic> toMap() {
+    Map<String, dynamic> map = {
+      "name": this._name,
+      "e-mail": this._email,
+    };
+    return map;
+  }
+
   String? get name => this._name;
   set name(String? value) => this._name = value;
 

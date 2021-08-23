@@ -14,7 +14,7 @@ class _SplashPageState extends State<SplashPage> {
   _checkUserSignedIn() async {
     FirebaseAuth auth = FirebaseAuth.instance;
     User? currentUser = await auth.currentUser;
-    await Future.delayed(Duration(seconds: 2));
+    await Future.delayed(Duration(seconds: 1));
 
     if (currentUser != null) {
       return Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);

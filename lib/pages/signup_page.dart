@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -33,7 +34,10 @@ class _SignUpPageState extends State<SignUpPage> {
       await auth
           .createUserWithEmailAndPassword(
               email: user.email!, password: user.password!)
-          .then((value) => firebaseSignUpResult = "Success");
+          .then((firebaseUser) {
+        firebaseSignUpResult = "Success";
+        _saveNewUserOnDatabase(user, firebaseUser.user!.uid);
+      });
     } on FirebaseAuthException catch (e) {
       if (e.code == "weak-password") {
         firebaseSignUpResult = "Senha fraca";
@@ -48,6 +52,12 @@ class _SignUpPageState extends State<SignUpPage> {
       print(e);
     }
     return firebaseSignUpResult;
+  }
+
+  _saveNewUserOnDatabase(UserModel user, String userId) {
+    FirebaseFirestore database = FirebaseFirestore.instance;
+
+    database.collection("Users").doc(userId).set(user.toMap());
   }
 
   @override
