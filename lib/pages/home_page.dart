@@ -14,6 +14,19 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   TabController? _tabController;
 
+  List<String> popUpMenuItems = ["Configurações", "Deslogar"];
+
+  _popUpMenuItemSelected(String itemSelected) {
+    switch (itemSelected) {
+      case "Configurações":
+        print("Configurações");
+        break;
+      case "Deslogar":
+        _signOut();
+        break;
+    }
+  }
+
   _signOut() {
     FirebaseAuth auth = FirebaseAuth.instance;
     auth.signOut();
@@ -48,12 +61,16 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
           ],
         ),
         actions: [
-          IconButton(
-            onPressed: _signOut,
-            icon: Icon(
-              Icons.logout,
-              color: AppColors.appBarButton,
-            ),
+          PopupMenuButton<String>(
+            onSelected: _popUpMenuItemSelected,
+            itemBuilder: (context) {
+              return popUpMenuItems.map((String item) {
+                return PopupMenuItem<String>(
+                  value: item,
+                  child: Text(item),
+                );
+              }).toList();
+            },
           ),
         ],
       ),
