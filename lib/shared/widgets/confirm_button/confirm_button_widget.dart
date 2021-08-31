@@ -2,21 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:whatsapp_flutter/shared/themes/app_colors.dart';
 
 class ConfirmButtonWidget extends StatelessWidget {
-  final String ButtonText;
+  final String buttonText;
   final VoidCallback onPressed;
+  final double? width;
 
   const ConfirmButtonWidget(
-      {Key? key, required this.ButtonText, required this.onPressed})
+      {Key? key, required this.buttonText, required this.onPressed, this.width})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: MediaQuery.of(context).size.width,
+      width: width ?? null,
       child: ElevatedButton(
         onPressed: onPressed,
         child: Text(
-          ButtonText,
+          buttonText,
           style: TextStyle(color: AppColors.textInfo, fontSize: 17),
         ),
         style: ButtonStyle(

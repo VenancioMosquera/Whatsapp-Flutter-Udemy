@@ -1,5 +1,6 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:whatsapp_flutter/shared/firebase/firebase_controller.dart';
+import 'package:whatsapp_flutter/shared/service_locator.dart';
 import 'package:whatsapp_flutter/shared/themes/app_colors.dart';
 import 'package:whatsapp_flutter/shared/themes/app_images.dart';
 
@@ -11,23 +12,13 @@ class SplashPage extends StatefulWidget {
 }
 
 class _SplashPageState extends State<SplashPage> {
-  _checkUserSignedIn() async {
-    FirebaseAuth auth = FirebaseAuth.instance;
-    User? currentUser = await auth.currentUser;
-    await Future.delayed(Duration(seconds: 1));
-
-    if (currentUser != null) {
-      return Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
-    } else {
-      return Navigator.pushNamedAndRemoveUntil(
-          context, '/loginPage', (route) => false);
-      ;
-    }
-  }
+  FirebaseController firebaseController =
+      firebaseControllerGetIt<FirebaseController>();
 
   @override
   Widget build(BuildContext context) {
-    _checkUserSignedIn();
+    firebaseController.checkUserSignedIn(context).then((nextPage) =>
+        Navigator.pushNamedAndRemoveUntil(context, nextPage, (route) => false));
     return Container(
       color: AppColors.primary,
       child: Center(
@@ -37,9 +28,6 @@ class _SplashPageState extends State<SplashPage> {
             Image.asset(
               AppImages.logoFull,
               scale: 1.3,
-            ),
-            CircularProgressIndicator(
-              color: AppColors.appBarButton,
             ),
           ],
         ),

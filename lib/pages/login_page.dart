@@ -1,8 +1,7 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
-import 'package:validatorless/validatorless.dart';
+import 'package:whatsapp_flutter/shared/firebase/firebase_controller.dart';
 import 'package:whatsapp_flutter/shared/models/user_model.dart';
+import 'package:whatsapp_flutter/shared/service_locator.dart';
 import 'package:whatsapp_flutter/shared/themes/app_colors.dart';
 import 'package:whatsapp_flutter/shared/themes/app_images.dart';
 import 'package:whatsapp_flutter/shared/widgets/confirm_button/confirm_button_widget.dart';
@@ -19,33 +18,10 @@ class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
   final _emailEC = TextEditingController();
   final _passwordEC = TextEditingController();
-  UserModel user = GetIt.instance.get<UserModel>();
+  UserModel user = userGetIt<UserModel>();
+  FirebaseController firebaseController =
+      firebaseControllerGetIt<FirebaseController>();
   String? _firebaseSignInResult;
-
-  Future _userSignIn(UserModel user) async {
-    FirebaseAuth auth = FirebaseAuth.instance;
-    String firebaseSignInResult = "";
-
-    try {
-      await auth
-          .signInWithEmailAndPassword(
-              email: user.email!, password: user.password!)
-          .then((value) => firebaseSignInResult = "Success");
-    } on FirebaseAuthException catch (e) {
-      if (e.code == "invalid-email") {
-        firebaseSignInResult = "E-mail inválido";
-      } else if (e.code == "user-not-found") {
-        firebaseSignInResult = "E-mail não encontrado";
-      } else if (e.code == "wrong-password") {
-        firebaseSignInResult = "Senha inválida";
-      }
-    } catch (e) {
-      firebaseSignInResult =
-          "Erro desconhecido. Favor contacte o administrador.";
-      print(e);
-    }
-    return firebaseSignInResult;
-  }
 
   _validatorEmail(String? firebaseSignInResult) {
     if (firebaseSignInResult == "E-mail inválido" ||
@@ -113,15 +89,17 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                     ),
                     ConfirmButtonWidget(
-                      ButtonText: "Entrar",
+                      width: MediaQuery.of(context).size.width,
+                      buttonText: "Entrar",
                       onPressed: () {
                         user.email = _emailEC.text;
                         user.password = _passwordEC.text;
-                        _userSignIn(user).then((value) {
+                        firebaseController.userSignIn().then((value) {
                           _firebaseSignInResult = value;
                           if (_firebaseSignInResult == "Success") {
-                            Navigator.pushNamedAndRemoveUntil(
-                                context, "/", (route) => false);
+                            user.password = null;
+                            Navigator.pushReplacementNamed(
+                                context, "/homePage");
                           } else {
                             print(_firebaseSignInResult);
                             _formKey.currentState?.validate();

@@ -35,6 +35,7 @@ dependencies:
   validatorless: ^1.2.1
   fluttertoast: ^8.0.8
   get_it: ^7.2.0
+  image_picker: ^0.8.3+3
   
 dev_dependencies:
   flutter_test:

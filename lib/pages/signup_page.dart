@@ -1,10 +1,9 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:get_it/get_it.dart';
 import 'package:validatorless/validatorless.dart';
+import 'package:whatsapp_flutter/shared/firebase/firebase_controller.dart';
 import 'package:whatsapp_flutter/shared/models/user_model.dart';
+import 'package:whatsapp_flutter/shared/service_locator.dart';
 import 'package:whatsapp_flutter/shared/themes/app_colors.dart';
 import 'package:whatsapp_flutter/shared/themes/app_images.dart';
 import 'package:whatsapp_flutter/shared/widgets/confirm_button/confirm_button_widget.dart';
@@ -23,46 +22,13 @@ class _SignUpPageState extends State<SignUpPage> {
   final _emailEC = TextEditingController();
   final _passwordEC = TextEditingController();
   final _passwordConfirmationEC = TextEditingController();
-  UserModel user = GetIt.instance.get<UserModel>();
+  UserModel user = userGetIt<UserModel>();
+  FirebaseController firebaseController =
+      firebaseControllerGetIt<FirebaseController>();
   String? firebaseSignUpResult;
-
-  Future _userSignUp(UserModel user) async {
-    FirebaseAuth auth = FirebaseAuth.instance;
-    String? firebaseSignUpResult;
-
-    try {
-      await auth
-          .createUserWithEmailAndPassword(
-              email: user.email!, password: user.password!)
-          .then((firebaseUser) {
-        firebaseSignUpResult = "Success";
-        _saveNewUserOnDatabase(user, firebaseUser.user!.uid);
-      });
-    } on FirebaseAuthException catch (e) {
-      if (e.code == "weak-password") {
-        firebaseSignUpResult = "Senha fraca";
-      } else if (e.code == "email-already-in-use") {
-        firebaseSignUpResult = "Esse e-mail já está registrado";
-      } else if (e.code == "invalid-email") {
-        firebaseSignUpResult = "E-mail inválido";
-      }
-    } catch (e) {
-      firebaseSignUpResult =
-          "Erro desconhecido. Favor contacte o administrador.";
-      print(e);
-    }
-    return firebaseSignUpResult;
-  }
-
-  _saveNewUserOnDatabase(UserModel user, String userId) {
-    FirebaseFirestore database = FirebaseFirestore.instance;
-
-    database.collection("Users").doc(userId).set(user.toMap());
-  }
 
   @override
   void dispose() {
-    // TODO: implement dispose
     _nameEC.dispose();
     _emailEC.dispose();
     _passwordEC.dispose();
@@ -152,7 +118,8 @@ class _SignUpPageState extends State<SignUpPage> {
                       ),
                     ),
                     ConfirmButtonWidget(
-                      ButtonText: "Cadastrar",
+                      width: MediaQuery.of(context).size.width,
+                      buttonText: "Cadastrar",
                       onPressed: () {
                         user.name = _nameEC.text;
                         user.email = _emailEC.text;
@@ -160,7 +127,7 @@ class _SignUpPageState extends State<SignUpPage> {
 
                         var formValid = _formKey.currentState?.validate();
                         if (formValid == true) {
-                          _userSignUp(user).then((value) {
+                          firebaseController.userSignUp().then((value) {
                             firebaseSignUpResult = value;
                             if (firebaseSignUpResult == "Success") {
                               Fluttertoast.showToast(
@@ -169,7 +136,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                 gravity: ToastGravity.BOTTOM,
                               );
                               Navigator.pushNamedAndRemoveUntil(
-                                  context, "/", (route) => false);
+                                  context, "/homePage", (route) => false);
                             } else {
                               showDialog(
                                 context: context,

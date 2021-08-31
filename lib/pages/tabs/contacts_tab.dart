@@ -10,8 +10,6 @@ class ContactsTab extends StatefulWidget {
 }
 
 class _ContactsTabState extends State<ContactsTab> {
-  ScrollController? _listViewController;
-
   List<Chat> chatsList = [
     Chat("Isabela", "oi", ""),
     Chat("Leonardo", "XERO DE PENEU KEMADO", ""),

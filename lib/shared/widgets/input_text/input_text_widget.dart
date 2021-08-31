@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:whatsapp_flutter/shared/themes/app_colors.dart';
 
 class InputTextWidget extends StatelessWidget {
-  final String hintText;
+  final String? hintText;
   final TextInputType textInputType;
   final bool obscureText;
   final TextEditingController? controller;
@@ -10,7 +10,7 @@ class InputTextWidget extends StatelessWidget {
 
   const InputTextWidget(
       {Key? key,
-      required this.hintText,
+      this.hintText,
       required this.obscureText,
       required this.textInputType,
       this.controller,

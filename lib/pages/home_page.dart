@@ -1,7 +1,9 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:whatsapp_flutter/pages/tabs/chats_tab.dart';
 import 'package:whatsapp_flutter/pages/tabs/contacts_tab.dart';
+import 'package:whatsapp_flutter/shared/firebase/firebase_controller.dart';
+import 'package:whatsapp_flutter/shared/models/user_model.dart';
+import 'package:whatsapp_flutter/shared/service_locator.dart';
 import 'package:whatsapp_flutter/shared/themes/app_colors.dart';
 
 class HomePage extends StatefulWidget {
@@ -12,30 +14,27 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
+  UserModel user = userGetIt<UserModel>();
+  FirebaseController firebaseController =
+      firebaseControllerGetIt<FirebaseController>();
   TabController? _tabController;
 
   List<String> popUpMenuItems = ["Configurações", "Deslogar"];
 
-  _popUpMenuItemSelected(String itemSelected) {
+  _popUpMenuItemSelected(String itemSelected) async {
+    await Future.delayed(Duration(milliseconds: 100));
     switch (itemSelected) {
       case "Configurações":
-        print("Configurações");
+        Navigator.pushNamed(context, '/settingsPage');
         break;
       case "Deslogar":
-        _signOut();
+        firebaseController.signOut(context);
         break;
     }
   }
 
-  _signOut() {
-    FirebaseAuth auth = FirebaseAuth.instance;
-    auth.signOut();
-    Navigator.pushNamedAndRemoveUntil(context, '/loginPage', (route) => false);
-  }
-
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
   }

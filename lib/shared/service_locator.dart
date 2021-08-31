@@ -1,8 +1,11 @@
 import 'package:get_it/get_it.dart';
+import 'package:whatsapp_flutter/shared/firebase/firebase_controller.dart';
 import 'package:whatsapp_flutter/shared/models/user_model.dart';
 
-final GetIt getIt = GetIt.instance;
+final GetIt userGetIt = GetIt.instance;
+final GetIt firebaseControllerGetIt = GetIt.instance;
 
 void setup() {
-  getIt.registerLazySingleton(() => UserModel());
+  userGetIt.registerLazySingleton(() => UserModel());
+  firebaseControllerGetIt.registerLazySingleton(() => FirebaseController());
 }
